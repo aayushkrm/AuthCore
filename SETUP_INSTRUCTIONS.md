@@ -1,4 +1,3 @@
-```markdown
 # Complete Setup Instructions
 
 Detailed step-by-step guide for setting up the Custom Authentication & Authorization System.
