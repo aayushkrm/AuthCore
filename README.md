@@ -47,47 +47,38 @@ This system demonstrates advanced backend development skills by implementing:
 
 **users** - User accounts and authentication
 ```
-
 - id (PK)
 - email (unique, indexed)
 - first_name, last_name, patronymic
 - password_hash (bcrypt)
 - is_active (for soft delete)
 - created_at, updated_at
-
 ```
 
 **roles** - System roles
 ```
-
 - id (PK)
 - name (admin, manager, user, guest)
 - description
-
 ```
 
 **user_roles** - User-role assignments (many-to-many)
 ```
-
 - id (PK)
 - user_id (FK → users)
 - role_id (FK → roles)
 - assigned_at
-
 ```
 
 **business_elements** - Protected resources
 ```
-
 - id (PK)
 - name (products, users, orders, stores, access_rules)
 - description
-
 ```
 
 **access_roles_rules** - Permission matrix
 ```
-
 - id (PK)
 - role_id (FK → roles)
 - element_id (FK → business_elements)
@@ -95,18 +86,15 @@ This system demonstrates advanced backend development skills by implementing:
 - create_permission
 - update_permission, update_all_permission
 - delete_permission, delete_all_permission
-
 ```
 
 **sessions** - Session management (optional)
 ```
-
 - id (PK)
 - user_id (FK → users)
 - session_id (unique)
 - expire_at
 - created_at
-
 ```
 
 ### Relationships
@@ -135,33 +123,25 @@ cd auth_system
 ```
 
 **2. Create Virtual Environment**
-```
-
+```bash
 python3 -m venv venv
-source venv/bin/activate  \# macOS/Linux
-
-# venv\Scripts\activate   \# Windows
-
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate   # Windows
 ```
 
 **3. Install Dependencies**
-```
-
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
-
 ```
 
 **4. Configure Environment**
-```
-
+```bash
 cp .env.example .env
-
 ```
 
 Edit `.env` with your settings:
-```
-
+```ini
 SECRET_KEY=your-django-secret-key
 JWT_SECRET=your-jwt-secret-key
 DB_NAME=auth_system_db
@@ -169,7 +149,6 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
-
 ```
 
 **Generate secret keys:**
@@ -367,62 +346,52 @@ curl -X POST http://localhost:8000/api/auth/register/ \
 ```
 
 Response:
-```
-
+```json
 {
-"message": "User registered successfully",
-"user_id": 7,
-"email": "john@example.com"
+    "message": "User registered successfully",
+    "user_id": 7,
+    "email": "john@example.com"
 }
-
 ```
 
 ### Login
-```
-
+```bash
 curl -X POST http://localhost:8000/api/auth/login/ \
 -H "Content-Type: application/json" \
 -d '{
-"email": "admin@test.com",
-"password": "password123"
+    "email": "admin@test.com",
+    "password": "password123"
 }'
-
 ```
 
 Response:
-```
-
+```json
 {
-"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-"user_id": 1,
-"email": "admin@test.com",
-"first_name": "Admin",
-"last_name": "User"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user_id": 1,
+    "email": "admin@test.com",
+    "first_name": "Admin",
+    "last_name": "User"
 }
-
 ```
 
 ### Get Profile
-```
-
+```bash
 curl http://localhost:8000/api/auth/profile/ \
 -H "Authorization: Bearer YOUR_TOKEN"
-
 ```
 
 Response:
-```
-
+```json
 {
-"id": 1,
-"email": "admin@test.com",
-"first_name": "Admin",
-"last_name": "User",
-"patronymic": "Administrator",
-"created_at": "2025-10-05T12:00:00Z",
-"updated_at": "2025-10-05T12:00:00Z"
+    "id": 1,
+    "email": "admin@test.com",
+    "first_name": "Admin",
+    "last_name": "User",
+    "patronymic": "Administrator",
+    "created_at": "2025-10-05T12:00:00Z",
+    "updated_at": "2025-10-05T12:00:00Z"
 }
-
 ```
 
 ### Create Product
@@ -503,45 +472,43 @@ curl http://localhost:8000/api/access-rules/ \
 ## 🏗️ Project Structure
 
 ```
-
 auth_system/
-├── auth_system/              \# Main project configuration
+├── auth_system/              # Main project configuration
 │   ├── __init__.py
-│   ├── settings.py          \# Django settings
-│   ├── urls.py              \# URL routing
+│   ├── settings.py          # Django settings
+│   ├── urls.py              # URL routing
 │   ├── wsgi.py
 │   └── asgi.py
-├── authentication/           \# Authentication app
-│   ├── models.py            \# User, Session models
-│   ├── serializers.py       \# DRF serializers
-│   ├── views.py             \# Auth endpoints
-│   ├── urls.py              \# Auth URL patterns
-│   ├── middleware.py        \# Custom auth middleware
-│   ├── exceptions.py        \# Custom exception handler
+├── authentication/           # Authentication app
+│   ├── models.py            # User, Session models
+│   ├── serializers.py       # DRF serializers
+│   ├── views.py             # Auth endpoints
+│   ├── urls.py              # Auth URL patterns
+│   ├── middleware.py        # Custom auth middleware
+│   ├── exceptions.py        # Custom exception handler
 │   └── management/
 │       └── commands/
-│           └── seed_data.py \# Database seeding
-├── authorization/            \# Authorization app
-│   ├── models.py            \# Role, AccessRule models
-│   ├── serializers.py       \# Authorization serializers
-│   ├── views.py             \# Admin API endpoints
-│   ├── urls.py              \# Authorization URLs
-│   └── permissions.py       \# Permission checker
-├── mock_business/            \# Mock business objects
-│   ├── models.py            \# (Minimal - using mock data)
-│   ├── views.py             \# CRUD endpoints
-│   └── urls.py              \# Business object URLs
-├── requirements.txt          \# Python dependencies
-├── .env.example             \# Environment template
-├── .gitignore               \# Git ignore rules
-├── manage.py                \# Django management
-├── README.md                \# This file
-├── QUICKSTART.md            \# Quick setup guide
-├── SETUP_INSTRUCTIONS.md    \# Detailed setup
-├── DATABASE_SCHEMA.md       \# Schema documentation
-├── test_api.sh              \# API test script
-└── postman_collection.json  \# Postman collection
-
+│           └── seed_data.py # Database seeding
+├── authorization/            # Authorization app
+│   ├── models.py            # Role, AccessRule models
+│   ├── serializers.py       # Authorization serializers
+│   ├── views.py             # Admin API endpoints
+│   ├── urls.py              # Authorization URLs
+│   └── permissions.py       # Permission checker
+├── mock_business/           # Mock business objects
+│   ├── models.py            # (Minimal - using mock data)
+│   ├── views.py             # CRUD endpoints
+│   └── urls.py              # Business object URLs
+├── requirements.txt         # Python dependencies
+├── .env.example            # Environment template
+├── .gitignore              # Git ignore rules
+├── manage.py               # Django management
+├── README.md               # This file
+├── QUICKSTART.md           # Quick setup guide
+├── SETUP_INSTRUCTIONS.md   # Detailed setup
+├── DATABASE_SCHEMA.md      # Schema documentation
+├── test_api.sh            # API test script
+└── postman_collection.json # Postman collection
 ```
 
 ## 🛠️ Technology Stack

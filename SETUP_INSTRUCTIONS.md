@@ -41,101 +41,66 @@ Detailed step-by-step guide for setting up the Custom Authentication & Authoriza
 
 ### Step 1: Project Setup
 
-```
-
-
+```bash
 # Navigate to project directory
-
 cd /path/to/auth_system
 
 # Verify project structure
-
 ls -la
 
 # Should see:
-
 # - manage.py
-
 # - requirements.txt
-
 # - .env.example
-
 # - README.md
-
 # - auth_system/ directory
-
 # - authentication/ directory
-
 # - authorization/ directory
-
 # - mock_business/ directory
-
 ```
 
 ### Step 2: Virtual Environment
 
 **Why?** Isolates project dependencies from system Python.
 
-```
-
-
+```bash
 # Create virtual environment
-
 python3 -m venv venv
 
 # Activate it
-
 # macOS/Linux:
-
 source venv/bin/activate
 
 # Windows (Command Prompt):
-
 venv\Scripts\activate.bat
 
 # Windows (PowerShell):
-
 venv\Scripts\Activate.ps1
 
 # Verify activation (should see (venv) in prompt)
-
-which python  \# should show path inside venv/
-
+which python  # should show path inside venv/
 ```
 
 ### Step 3: Install Dependencies
 
-```
-
-
+```bash
 # Upgrade pip (important!)
-
 pip install --upgrade pip
 
 # Install all requirements
-
 pip install -r requirements.txt
 
 # This installs:
-
 # - Django 4.2.7
-
 # - djangorestframework 3.14.0
-
 # - psycopg2-binary 2.9.9 (PostgreSQL adapter)
-
 # - bcrypt 4.1.1 (password hashing)
-
 # - PyJWT 2.8.0 (JWT tokens)
-
 # - python-decouple 3.8 (environment config)
 
 # Verify installation
-
 pip list
-
 # Expected output includes all packages above
-
 ```
 
 **Troubleshooting installations:**
@@ -610,23 +575,21 @@ curl -X POST http://localhost:8000/api/auth/login/ \
 TOKEN="paste_token_here"
 
 curl http://localhost:8000/api/auth/profile/ \
--H "Authorization: Bearer \$TOKEN"
+-H "Authorization: Bearer $TOKEN"
 
 ```
 
 **Expected response:**
-```
-
+```json
 {
-"id": 1,
-"email": "admin@test.com",
-"first_name": "Admin",
-"last_name": "User",
-"patronymic": "Administrator",
-"created_at": "2025-10-05T12:00:00Z",
-"updated_at": "2025-10-05T12:00:00Z"
+    "id": 1,
+    "email": "admin@test.com",
+    "first_name": "Admin",
+    "last_name": "User",
+    "patronymic": "Administrator",
+    "created_at": "2025-10-05T12:00:00Z",
+    "updated_at": "2025-10-05T12:00:00Z"
 }
-
 ```
 
 **Test 3: List Products**

@@ -17,48 +17,34 @@ Get the Custom Authentication & Authorization System running in **5 minutes**.
 
 ### 1. Environment Setup
 
-```
-
-
+```bash
 # Navigate to project directory
-
 cd auth_system
 
 # Create virtual environment
-
 python3 -m venv venv
 
 # Activate virtual environment
-
 # macOS/Linux:
-
 source venv/bin/activate
 
 # Windows:
-
 venv\Scripts\activate
 
 # You should see (venv) in your prompt
-
 ```
 
 ### 2. Install Dependencies
 
-```
-
-
+```bash
 # Upgrade pip
-
 pip install --upgrade pip
 
 # Install all requirements
-
 pip install -r requirements.txt
 
 # Verify installation
-
 pip list
-
 ```
 
 Expected output should include:
@@ -173,7 +159,6 @@ python manage.py seed_data
 
 Expected output:
 ```
-
 ✓ Data cleared
 ✓ Created role: admin
 ✓ Created role: manager
@@ -196,7 +181,6 @@ Expected output:
 ✓ Created user: inactive@test.com (deactivated)
 
 DATABASE SEEDED SUCCESSFULLY!
-
 ```
 
 ### 7. Start Development Server
@@ -241,16 +225,14 @@ curl -X POST http://localhost:8000/api/auth/login/ \
 ```
 
 You should see:
-```
-
+```json
 {
-"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-"user_id": 1,
-"email": "admin@test.com",
-"first_name": "Admin",
-"last_name": "User"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user_id": 1,
+    "email": "admin@test.com",
+    "first_name": "Admin",
+    "last_name": "User"
 }
-
 ```
 
 **2. Copy the token and test protected endpoint:**
