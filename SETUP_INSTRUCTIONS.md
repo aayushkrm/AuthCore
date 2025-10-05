@@ -1,5 +1,3 @@
-## SETUP_INSTRUCTIONS.md
-
 ```markdown
 # Complete Setup Instructions
 
