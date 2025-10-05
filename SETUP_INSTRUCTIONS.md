@@ -19,11 +19,11 @@ Detailed step-by-step guide for setting up the Custom Authentication & Authoriza
 
 ### Required Software
 
-| Software | Minimum Version | Check Command |
-|----------|----------------|---------------|
-| Python | 3.8+ | `python3 --version` |
-| PostgreSQL | 12+ | `psql --version` |
-| pip | 20+ | `pip --version` |
+| Software   | Minimum Version | Check Command       |
+|------------|-----------------|---------------------|
+| Python     | 3.8+            | `python3 --version` |
+| PostgreSQL | 12+             | `psql --version`    |
+| pip        | 20+             | `pip --version`     |
 
 ### Installation Guides
 
@@ -993,5 +993,3 @@ If you encounter issues:
 **Status:** If all verification checks pass, your system is ready for development and demonstration!
 ```
 
-
-***

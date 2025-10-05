@@ -1,6 +1,3 @@
-## README.md
-
-```markdown
 # Custom Authentication & Authorization System
 
 A production-ready Django REST Framework implementation of custom authentication and authorization with granular role-based access control (RBAC), built entirely from scratch without using Django's built-in authentication framework.
@@ -46,7 +43,7 @@ This system demonstrates advanced backend development skills by implementing:
 ### Core Tables
 
 **users** - User accounts and authentication
-```
+```markdown
 - id (PK)
 - email (unique, indexed)
 - first_name, last_name, patronymic
@@ -56,14 +53,14 @@ This system demonstrates advanced backend development skills by implementing:
 ```
 
 **roles** - System roles
-```
+```markdown
 - id (PK)
 - name (admin, manager, user, guest)
 - description
 ```
 
 **user_roles** - User-role assignments (many-to-many)
-```
+```markdown
 - id (PK)
 - user_id (FK → users)
 - role_id (FK → roles)
@@ -71,14 +68,14 @@ This system demonstrates advanced backend development skills by implementing:
 ```
 
 **business_elements** - Protected resources
-```
+```markdown
 - id (PK)
 - name (products, users, orders, stores, access_rules)
 - description
 ```
 
 **access_roles_rules** - Permission matrix
-```
+```markdown
 - id (PK)
 - role_id (FK → roles)
 - element_id (FK → business_elements)
@@ -89,7 +86,7 @@ This system demonstrates advanced backend development skills by implementing:
 ```
 
 **sessions** - Session management (optional)
-```
+```markdown
 - id (PK)
 - user_id (FK → users)
 - session_id (unique)
@@ -669,7 +666,3 @@ For questions or issues during setup:
 ---
 
 **Note:** This system demonstrates production-ready authentication and authorization patterns. All passwords are hashed with bcrypt, tokens expire after 24 hours, and the system follows security best practices throughout.
-```
-
-
-***

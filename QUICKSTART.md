@@ -1,5 +1,3 @@
-
-
 ## QUICKSTART.md
 
 ```markdown
@@ -531,3 +529,4 @@ If you've completed all steps and verified the checklist, your system is **fully
 **Estimated setup time:** 3-5 minutes (excluding PostgreSQL installation)
 
 **Questions?** All test credentials are `password123` for easy testing.
+````
