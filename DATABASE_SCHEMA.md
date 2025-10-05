@@ -11,44 +11,42 @@ The system uses **PostgreSQL** and consists of 6 main tables implementing custom
 
 ## Entity Relationship Diagram (ERD)
 
-```
-
+```ascii
 ┌─────────────────┐
 │     users       │
 └────────┬────────┘
-│
-│ 1
-│
-│ *
+         │
+         │ 1
+         │
+         │ *
 ┌────────┴────────┐
 │   user_roles    │
 └────────┬────────┘
-│
-│ *
-│
-│ 1
+         │
+         │ *
+         │
+         │ 1
 ┌────────┴────────┐         ┌─────────────────────┐
 │     roles       │────*────│ access_roles_rules  │
 └─────────────────┘         └──────────┬──────────┘
-│
-│ *
-│
-│ 1
-┌──────────┴──────────┐
-│  business_elements  │
-└─────────────────────┘
+         │
+         │ *
+         │
+         │ 1
+┌────────┴────────┐
+│business_elements│
+└─────────────────┘
 
 ┌─────────────────┐
 │    sessions     │
 │  (optional)     │
 └────────┬────────┘
-│ *
-│
-│ 1
+         │ *
+         │
+         │ 1
 ┌────────┴────────┐
 │     users       │
 └─────────────────┘
-
 ```
 
 ## Table Details
@@ -247,19 +245,18 @@ Example access rules for different roles on the 'products' element:
 
 ### Create Tables SQL
 
-```
-
+```sql
 -- Users table
 CREATE TABLE users (
-id SERIAL PRIMARY KEY,
-email VARCHAR(254) UNIQUE NOT NULL,
-first_name VARCHAR(100) NOT NULL,
-last_name VARCHAR(100) NOT NULL,
-patronymic VARCHAR(100),
-password_hash VARCHAR(255) NOT NULL,
-is_active BOOLEAN NOT NULL DEFAULT TRUE,
-created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(254) UNIQUE NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    patronymic VARCHAR(100),
+    password_hash VARCHAR(255) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_users_email ON users(email);
@@ -267,18 +264,18 @@ CREATE INDEX idx_users_is_active ON users(is_active);
 
 -- Roles table
 CREATE TABLE roles (
-id SERIAL PRIMARY KEY,
-name VARCHAR(50) UNIQUE NOT NULL,
-description TEXT
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT
 );
 
 -- User roles junction table
 CREATE TABLE user_roles (
-id SERIAL PRIMARY KEY,
-user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
-assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-UNIQUE(user_id, role_id)
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, role_id)
 );
 
 CREATE INDEX idx_user_roles_user ON user_roles(user_id);
@@ -286,24 +283,24 @@ CREATE INDEX idx_user_roles_role ON user_roles(role_id);
 
 -- Business elements table
 CREATE TABLE business_elements (
-id SERIAL PRIMARY KEY,
-name VARCHAR(100) UNIQUE NOT NULL,
-description TEXT
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT
 );
 
 -- Access rules table
 CREATE TABLE access_roles_rules (
-id SERIAL PRIMARY KEY,
-role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
-element_id INTEGER NOT NULL REFERENCES business_elements(id) ON DELETE CASCADE,
-read_permission BOOLEAN NOT NULL DEFAULT FALSE,
-read_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
-create_permission BOOLEAN NOT NULL DEFAULT FALSE,
-update_permission BOOLEAN NOT NULL DEFAULT FALSE,
-update_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
-delete_permission BOOLEAN NOT NULL DEFAULT FALSE,
-delete_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
-UNIQUE(role_id, element_id)
+    id SERIAL PRIMARY KEY,
+    role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    element_id INTEGER NOT NULL REFERENCES business_elements(id) ON DELETE CASCADE,
+    read_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    read_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    create_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    update_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    update_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    delete_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    delete_all_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE(role_id, element_id)
 );
 
 CREATE INDEX idx_access_rules_role ON access_roles_rules(role_id);
@@ -311,16 +308,15 @@ CREATE INDEX idx_access_rules_element ON access_roles_rules(element_id);
 
 -- Sessions table (optional)
 CREATE TABLE sessions (
-id SERIAL PRIMARY KEY,
-user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-session_id VARCHAR(255) UNIQUE NOT NULL,
-expire_at TIMESTAMP NOT NULL,
-created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    session_id VARCHAR(255) UNIQUE NOT NULL,
+    expire_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_sessions_user ON sessions(user_id);
 CREATE INDEX idx_sessions_session_id ON sessions(session_id);
-
 ```
 
 ---
@@ -328,58 +324,51 @@ CREATE INDEX idx_sessions_session_id ON sessions(session_id);
 ## Querying Examples
 
 ### Get all roles for a user
-```
-
+```sql
 SELECT r.name, r.description
 FROM roles r
-JOIN user_roles ur ON r.id = ur.role_id
+    JOIN user_roles ur ON r.id = ur.role_id
 WHERE ur.user_id = 1;
-
 ```
 
 ### Get all permissions for a role on a specific element
-```
-
+```sql
 SELECT
-r.name as role_name,
-be.name as element_name,
-arr.*
+    r.name as role_name,
+    be.name as element_name,
+    arr.*
 FROM access_roles_rules arr
-JOIN roles r ON arr.role_id = r.id
-JOIN business_elements be ON arr.element_id = be.id
-WHERE r.name = 'user' AND be.name = 'products';
-
+    JOIN roles r ON arr.role_id = r.id
+    JOIN business_elements be ON arr.element_id = be.id
+WHERE r.name = 'user' 
+    AND be.name = 'products';
 ```
 
 ### Check if user has specific permission
-```
-
+```sql
 SELECT EXISTS (
-SELECT 1
-FROM access_roles_rules arr
-JOIN user_roles ur ON arr.role_id = ur.role_id
-JOIN business_elements be ON arr.element_id = be.id
-WHERE ur.user_id = 1
-AND be.name = 'products'
-AND arr.create_permission = TRUE
+    SELECT 1
+    FROM access_roles_rules arr
+        JOIN user_roles ur ON arr.role_id = ur.role_id
+        JOIN business_elements be ON arr.element_id = be.id
+    WHERE ur.user_id = 1
+        AND be.name = 'products'
+        AND arr.create_permission = TRUE
 ) as has_permission;
-
 ```
 
 ### Get all active users with their roles
-```
-
+```sql
 SELECT
-u.email,
-u.first_name,
-u.last_name,
-STRING_AGG(r.name, ', ') as roles
+    u.email,
+    u.first_name,
+    u.last_name,
+    STRING_AGG(r.name, ', ') as roles
 FROM users u
-LEFT JOIN user_roles ur ON u.id = ur.user_id
-LEFT JOIN roles r ON ur.role_id = r.id
+    LEFT JOIN user_roles ur ON u.id = ur.user_id
+    LEFT JOIN roles r ON ur.role_id = r.id
 WHERE u.is_active = TRUE
 GROUP BY u.id, u.email, u.first_name, u.last_name;
-
 ```
 
 ---
@@ -420,29 +409,22 @@ GROUP BY u.id, u.email, u.first_name, u.last_name;
 ## Backup and Maintenance
 
 ### Backup Strategy
-```
-
-
+```bash
 # Full database backup
-
-pg_dump -U postgres auth_system_db > backup_\$(date +%Y%m%d).sql
+pg_dump -U postgres auth_system_db > backup_$(date +%Y%m%d).sql
 
 # Restore from backup
-
 psql -U postgres auth_system_db < backup_20251005.sql
-
 ```
 
 ### Maintenance Tasks
-```
-
+```sql
 -- Clean expired sessions (if using session-based auth)
 DELETE FROM sessions WHERE expire_at < NOW();
 
 -- Vacuum analyze for performance
 VACUUM ANALYZE users;
 VACUUM ANALYZE access_roles_rules;
-
 ```
 
 ---
