@@ -1,4 +1,4 @@
-# Custom Authentication & Authorization System
+f# Custom Authentication & Authorization System
 
 A production-ready Django REST Framework implementation of custom authentication and authorization with granular role-based access control (RBAC), built entirely from scratch without using Django's built-in authentication framework.
 
@@ -633,7 +633,6 @@ python manage.py shell
 
 ## 🤝 Contributing
 
-This is a demonstration project for a job interview. For production use:
 1. Add comprehensive unit tests
 2. Implement API rate limiting
 3. Add password reset functionality
@@ -642,19 +641,7 @@ This is a demonstration project for a job interview. For production use:
 6. Set up proper logging
 7. Add API documentation (Swagger/OpenAPI)
 
-## 📄 License
 
-This project is created for educational and interview purposes.
-
-## 👤 Author
-
-Created as a technical assessment demonstrating:
-- Advanced Django and DRF skills
-- Custom authentication implementation
-- Security best practices
-- Database design and normalization
-- RESTful API design
-- Clean code architecture
 
 ## 📞 Support
 
