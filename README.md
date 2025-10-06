@@ -1,4 +1,4 @@
-f# Custom Authentication & Authorization System
+# Custom Authentication & Authorization System
 
 A production-ready Django REST Framework implementation of custom authentication and authorization with granular role-based access control (RBAC), built entirely from scratch without using Django's built-in authentication framework.
 
