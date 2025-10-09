@@ -536,8 +536,8 @@ chmod +x test_api.sh
 ### Using Postman
 1. Import `postman_collection.json`
 2. Set base_url variable to `http://localhost:8000/api`
-3. Run authentication requests first
-4. Token is automatically saved for subsequent requests
+3. Run authentication requests first.
+4. Token is automatically saved for subsequent requests.
 
 ### Using HTTPie
 ```
